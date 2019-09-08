@@ -1,0 +1,16 @@
+
+charset: UTF-8
+
+type: classpath
+
+template:
+  path: template/freemarker
+
+  config:
+    Mapper.java.ftl: ${outDir}/classpath/${className}Mapper.java
+  data:
+    className: User
+    package: user
+    author: 'yyc'
+    content: 'create by classpath, author: yyc'
+    outDir: generator-out/freemarker
