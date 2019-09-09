@@ -13,6 +13,7 @@
         <module>generator-velocity</module>
         <module>generator-velocity-engine</module>
         <module>generator-freemarker</module>
+        <module>generator-all</module>
         <module>generator-test</module>
     </modules>
 
