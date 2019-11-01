@@ -18,7 +18,7 @@ public class GeneratorUtils {
      */
     public static List<String> getVarExpressList(String source) {
         if (source != null && source.length() > 0) {
-            String regex = "\\$\\{.+?\\}";
+            String regex = "\\$\\{(.*?)\\}";
             Pattern r = Pattern.compile(regex);
             Matcher m = r.matcher(source);
             List<String> results = new ArrayList<>(16);
