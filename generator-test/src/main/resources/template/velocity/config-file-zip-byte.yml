@@ -1,0 +1,17 @@
+
+charset: UTF-8
+
+type: file
+
+template:
+  path: generator-test/src/main/resources/template/velocity
+
+  config:
+    Mapper.java.vm: mapper/${className}Mapper.java
+    ~zip!: byte
+  data:
+    className: User
+    package: user
+    author: 'yyc'
+    content: 'create by file, author: yyc'
+    outDir: generator-out/velocity
