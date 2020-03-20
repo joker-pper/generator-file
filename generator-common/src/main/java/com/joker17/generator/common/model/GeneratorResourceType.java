@@ -1,6 +1,6 @@
 package com.joker17.generator.common.model;
 
-public enum GeneratorResoureType {
+public enum GeneratorResourceType {
 
     FILE("file"),
 
@@ -8,7 +8,7 @@ public enum GeneratorResoureType {
 
     private String value;
 
-    GeneratorResoureType(String value) {
+    GeneratorResourceType(String value) {
         this.value = value;
     }
 

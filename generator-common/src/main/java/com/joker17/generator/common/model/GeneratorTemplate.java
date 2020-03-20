@@ -31,5 +31,9 @@ public class GeneratorTemplate {
      */
     private Map<String, Object> data = new HashMap<>(16);
 
+    /**
+     * 是否增强处理data中的字符变量值
+     */
+    private Boolean boost = false;
 
 }

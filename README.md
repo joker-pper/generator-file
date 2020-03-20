@@ -7,8 +7,8 @@
     
 ## GeneratorParam参数:
 ```
-    charset(String): 字符集,用于读取和输出文件
-    type(String): 读取模板文件方式: file/classpath [GeneratorResoureType中value值]
+    charset(String): 字符集,用于读取和输出文件: 默认输入输出一致 多个时以,分隔 [0]输入 [1]输出
+    type(String): 读取模板文件方式: file/classpath [GeneratorResourceType中value值]
     template(GeneratorTemplate): 模板资源配置
 ```
 ## GeneratorTemplate参数:
@@ -23,6 +23,8 @@
             ~zip! -> byte/导出文件路径 (以zip方式导出,可选)
     data(Map<String, Object>):    
         数据配置 (变量值用于模板数据渲染及模板配置中导出文件路径的处理)
+    boost(Boolean):
+        是否增强处理data中的字符变量值 (进行简单处理数据配置中的value值) 
 ```   
 ## api
 ``` 
