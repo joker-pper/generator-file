@@ -2,10 +2,6 @@ package com.joker17.generator.test;
 
 import com.joker17.generator.common.model.GeneratorParam;
 import com.joker17.generator.common.model.GeneratorTemplate;
-import com.joker17.generator.common.service.GeneratorService;
-import com.joker17.generator.freemarker.iml.FreemarkerGeneratorImpl;
-import com.joker17.generator.velocity.engine.iml.VelocityEngineGeneratorImpl;
-import com.joker17.generator.velocity.iml.VelocityGeneratorImpl;
 
 import java.util.Map;
 
