@@ -51,8 +51,6 @@ public enum GeneratorCase {
         return builder.toString();
     }
 
-
-
     public static List<Long> indexs() {
         GeneratorCase[] values = GeneratorCase.values();
         List<Long> indexs = new ArrayList<>(values.length);
@@ -64,23 +62,22 @@ public enum GeneratorCase {
 
     public static GeneratorCase indexOf(int index) {
         GeneratorCase[] values = GeneratorCase.values();
-        if (index > values.length) {
+        if (index < 1) {
+            throw new IllegalArgumentException("min index: 1");
+        } else if (index > values.length) {
             throw new IllegalArgumentException("max index: " + values.length);
         }
+
         GeneratorCase generatorCase = values[index - 1];
         if (generatorCase.ordinal() != index - 1) {
-            for (GeneratorCase value : GeneratorCase.values()) {
+            for (GeneratorCase value : values) {
                 if (value.ordinal() == index - 1) {
                     generatorCase = value;
                     break;
                 }
-
             }
         }
-
         return generatorCase;
     }
-
-
 
 }
