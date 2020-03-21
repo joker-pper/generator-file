@@ -3,7 +3,7 @@
 *使用GeneratorParam参数统一进行渲染文件*
 
 ## 支持模板类型:
-    freemarker velocity velocity-engine
+    freemarker velocity velocity-engine beetl
     
 ## GeneratorParam参数:
 ```
@@ -26,13 +26,14 @@
     boost(Boolean):
         是否增强处理data中的字符变量值 (进行简单处理数据配置中的value值) 
 ```   
-## api
+## API 调用
 ``` 
 
 //通过工具类
 FreemarkerUtils.generator(generatorParamModel);
 VelocityUtils.generator(generatorParamModel);
 VelocityEngineUtils.generator(generatorParamModel);
+BeetlUtils.generator(generatorParamModel);
 
 //通过对象
 GeneratorService freemarkerService = new FreemarkerGeneratorImpl();
@@ -43,6 +44,17 @@ velocityService.generator(generatorParamModel);
 
 GeneratorService velocityEngineService = new VelocityEngineGeneratorImpl();
 velocityEngineService.generator(generatorParamModel);
+
+GeneratorService beetlService = new BeetlGeneratorImpl();
+beetlService.generator(generatorParamModel);
+
+``` 
+
+## API 结果
+``` 
+
+类型: Map<String, ByteArrayOutputStream> 
+说明: key为config模板配置key,当配置value值为byte时存在
 
 ``` 
 

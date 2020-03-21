@@ -221,7 +221,7 @@ public class GeneratorUtils {
 
 
     /**
-     * 进行生成文件的逻辑实现
+     * 进行输出文件的逻辑实现
      * @param generatorParamModel
      * @param worker
      * @param <Template>
@@ -234,7 +234,7 @@ public class GeneratorUtils {
         GeneratorResourceType resourceType = getGeneratorResourceType(generatorParamModel.getType());
 
         GeneratorTemplate generatorTemplate = generatorParamModel.getTemplate();
-        String templateGlobalPath = generatorTemplate.getPath();
+        String templateGlobalPath = getValueOrDefault(trimToNull(generatorTemplate.getPath()), "");
         boolean hasTemplateGlobalPath = templateGlobalPath != null && templateGlobalPath.length() > 0;
 
         //初始化引擎
@@ -295,9 +295,8 @@ public class GeneratorUtils {
 
                 OutputStreamWriter streamWriter = null;
 
-                boolean isExportByte = BYTE_TEXT.equals(exportFilePath);
                 try {
-                    if (isExportByte) {
+                    if (BYTE_TEXT.equals(exportFilePath)) {
                         //导出当前为byte时
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(BUFFER_SIZE);
                         streamWriter = new OutputStreamWriter(byteArrayOutputStream, outCharset);

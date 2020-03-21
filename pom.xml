@@ -13,6 +13,7 @@
         <module>generator-velocity</module>
         <module>generator-velocity-engine</module>
         <module>generator-freemarker</module>
+        <module>generator-beetl</module>
         <module>generator-all</module>
         <module>generator-test</module>
     </modules>
@@ -30,6 +31,7 @@
         <velocity.version>1.7</velocity.version>
         <velocity-engine.version>2.1</velocity-engine.version>
         <freemarker.version>2.3.29</freemarker.version>
+        <beetl.version>3.0.20.RELEASE</beetl.version>
     </properties>
 
 

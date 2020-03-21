@@ -15,20 +15,9 @@ public class FreemarkerUtils {
 
     private static volatile Map<String, Configuration> configurationCacheMap = new HashMap<>(16);
 
-    public static Configuration getConfiguration(GeneratorResourceType resoureType, String templateGlobalPath) throws IOException {
-        templateGlobalPath = templateGlobalPath == null || templateGlobalPath.isEmpty() ? "" : templateGlobalPath;
-
-        if (resoureType == GeneratorResourceType.FILE) {
-            if (!templateGlobalPath.isEmpty() && !templateGlobalPath.endsWith("/")) {
-                templateGlobalPath += "/";
-            }
-        } else if (resoureType == GeneratorResourceType.CLASSPATH) {
-            //classpath时设置为根目录
-            templateGlobalPath = "/";
-        }
-
+    public static Configuration getConfiguration(GeneratorResourceType resourceType, String templateGlobalPath) throws IOException {
         StringBuilder builder = new StringBuilder();
-        builder.append(resoureType.getValue()).append(":").append(templateGlobalPath);
+        builder.append(resourceType.getValue()).append(":").append(templateGlobalPath);
         String key = builder.toString();
         Configuration configuration = configurationCacheMap.get(key);
         if (configuration == null) {
@@ -36,10 +25,10 @@ public class FreemarkerUtils {
                 configuration = configurationCacheMap.get(key);
                 if (configuration == null) {
                     configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-                    if (resoureType == GeneratorResourceType.FILE) {
+                    if (resourceType == GeneratorResourceType.FILE) {
                         configuration.setDirectoryForTemplateLoading(new File(templateGlobalPath));
-                    } else if (resoureType == GeneratorResourceType.CLASSPATH) {
-                        configuration.setClassForTemplateLoading(FreemarkerUtils.class, templateGlobalPath);
+                    } else if (resourceType == GeneratorResourceType.CLASSPATH) {
+                        configuration.setClassForTemplateLoading(FreemarkerUtils.class, "/");
                     }
                     configurationCacheMap.put(key, configuration);
                 }
