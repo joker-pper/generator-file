@@ -8,6 +8,7 @@ template:
 
   config:
     Mapper.java.ftl: mapper/${className}Mapper.java
+    Dao.java.ftl: mapper/${className}Dao.java
     #~zip!: generator-out/freemarker/file/package.zip #输出为zip
     ~zip!: ${outDir}/file/package.zip #输出为zip
   data:

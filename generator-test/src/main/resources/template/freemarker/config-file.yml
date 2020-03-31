@@ -8,6 +8,7 @@ template:
 
   config:
     Mapper.java.ftl: ${outDir}/file/${className}Mapper.java
+    Dao.java.ftl: ${outDir}/file/${className}Dao.java
   data:
     className: User
     package: user

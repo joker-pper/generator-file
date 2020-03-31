@@ -8,6 +8,8 @@ template:
 
   config:
     Mapper.java.vm: mapper/${className}Mapper.java
+    Dao.java.vm: mapper/${className}Dao.java
+
     ~zip!: byte
   data:
     className: User

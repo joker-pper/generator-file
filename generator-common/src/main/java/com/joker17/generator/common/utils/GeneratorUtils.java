@@ -279,6 +279,8 @@ public class GeneratorUtils {
         //获取实际所需要的数据对象
         Model workModel = worker.getWorkModel(dataConfig);
 
+        OutputStreamWriter streamWriter = null;
+
         boolean hasIOException = false;
         try {
             for (Map.Entry<String, String> entry : templateConfigMap.entrySet()) {
@@ -293,50 +295,44 @@ public class GeneratorUtils {
                 //获取模板对象
                 Template template = worker.getTemplate(templatePath, inputCharset);
 
-                OutputStreamWriter streamWriter = null;
+                if (BYTE_TEXT.equals(exportFilePath)) {
+                    //导出当前为byte时
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(BUFFER_SIZE);
+                    streamWriter = new OutputStreamWriter(byteArrayOutputStream, outCharset);
 
-                try {
-                    if (BYTE_TEXT.equals(exportFilePath)) {
-                        //导出当前为byte时
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(BUFFER_SIZE);
-                        streamWriter = new OutputStreamWriter(byteArrayOutputStream, outCharset);
+                    worker.process(template, workModel, streamWriter);
+                    streamWriter.flush();
+
+                    byteArrayOutputStreamMap.put(templateKey, byteArrayOutputStream);
+                } else {
+                    //获取导出的具体路径值
+                    exportFilePath = parseVarExpressValue(exportFilePath, dataConfig);
+
+                    if (isExportZip) {
+                        //当导出为zip时写入zip中
+
+                        zipOutputStream.putNextEntry(new ZipEntry(exportFilePath));
+                        streamWriter = new OutputStreamWriter(zipOutputStream, outCharset);
 
                         worker.process(template, workModel, streamWriter);
                         streamWriter.flush();
 
-                        byteArrayOutputStreamMap.put(templateKey, byteArrayOutputStream);
+                        zipOutputStream.closeEntry();
+                        zipOutputStream.flush();
                     } else {
-                        //获取导出的具体路径值
-                        exportFilePath = parseVarExpressValue(exportFilePath, dataConfig);
-
-                        if (isExportZip) {
-                            //当导出为zip时写入zip中
-
-                            zipOutputStream.putNextEntry(new ZipEntry(exportFilePath));
-                            streamWriter = new OutputStreamWriter(zipOutputStream, outCharset);
-
+                        //当导出为文件时
+                        File exportFile = new File(exportFilePath);
+                        resolveDirs(exportFile);
+                        FileOutputStream fileOutputStream = null;
+                        try {
+                            fileOutputStream = new FileOutputStream(exportFile);
+                            streamWriter = new OutputStreamWriter(fileOutputStream, outCharset);
                             worker.process(template, workModel, streamWriter);
                             streamWriter.flush();
-
-                            zipOutputStream.closeEntry();
-                            zipOutputStream.flush();
-                        } else {
-                            //当导出为文件时
-                            File exportFile = new File(exportFilePath);
-                            resolveDirs(exportFile);
-                            FileOutputStream fileOutputStream = null;
-                            try {
-                                fileOutputStream = new FileOutputStream(exportFile);
-                                streamWriter = new OutputStreamWriter(fileOutputStream, outCharset);
-                                worker.process(template, workModel, streamWriter);
-                                streamWriter.flush();
-                            } finally {
-                                IOUtils.closeQuietly(fileOutputStream);
-                            }
+                        } finally {
+                            IOUtils.closeQuietly(fileOutputStream);
                         }
                     }
-                } finally {
-                    IOUtils.closeQuietly(streamWriter);
                 }
             }
 
@@ -350,6 +346,7 @@ public class GeneratorUtils {
                     FileUtils.deleteQuietly(new File(zipPath));
                 }
             }
+            IOUtils.closeQuietly(streamWriter);
         }
         return byteArrayOutputStreamMap;
     }

@@ -8,6 +8,7 @@ template:
 
   config:
     Mapper.java.btl: mapper/${className}Mapper.java
+    Dao.java.btl: mapper/${className}Dao.java
     ~zip!: ${outDir}/file/package.zip #输出为zip
   data:
     className: User
