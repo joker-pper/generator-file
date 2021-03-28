@@ -15,7 +15,7 @@
 ```
     path(String): 模版资源全局路径 (classpath时以根目录为首)
     config(Map<String, String>):
-        模板配置 (模板项 -> 导出文件路径/byte)
+        模板配置 (模板项 -> 导出文件路径/byte/none)
         e.g:
             default.html.vm -> byte  (添加到返回结果中)
             add.html.vm -> /template/${package}/add.html (写入文件中)
@@ -60,4 +60,4 @@ beetlService.generator(generatorParamModel);
 
 ## 其他     
 ### generator-file-all 提供打包为可执行jar并支持直接选择模板类型及配置文件(yml/json)进行生成文件
-    - 可通过命令运行: java -Dfile.encoding=utf-8 -jar generator-file-all-1.0-SNAPSHOT.jar  
+    - 可通过命令运行: java -Dfile.encoding=utf-8 -Dgenerator.param.print=false -jar generator-file-all-1.0-SNAPSHOT.jar 

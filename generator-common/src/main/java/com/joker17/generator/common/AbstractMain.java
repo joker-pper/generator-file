@@ -1,6 +1,7 @@
 package com.joker17.generator.common;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.joker17.generator.common.model.GeneratorParam;
 import com.joker17.generator.common.utils.ScannerSupport;
 import com.joker17.generator.common.utils.YamlUtils;
@@ -25,26 +26,24 @@ public abstract class AbstractMain {
             System.out.println("请选择配置文件格式: 1: yml, 2: json");
             long formatValue = scannerSupport.nextLongWhenTrue("输入值格式错误,请重新输入: ", Arrays.asList(1L, 2L), "文件格式值输入错误,请重新输入: ");
             System.out.println("请输入配置文件路径: ");
-            GeneratorParam generatorParam;
+
+            //解析配置文件
+            GeneratorParam generatorParam = null;
+            FileInputStream configFileInputStream = null;
             try {
                 String path = scannerSupport.next();
+
                 if (formatValue == 1) {
                     if (path == null || !path.endsWith(".yml")) {
                         throw new IllegalArgumentException("非yml文件");
                     }
-                    generatorParam = YamlUtils.toJavaObject(new FileInputStream(path), GeneratorParam.class);
+                    configFileInputStream = new FileInputStream(path);
+                    generatorParam = YamlUtils.toJavaObject(configFileInputStream, GeneratorParam.class);
                 } else {
                     if (path == null || !path.endsWith(".json")) {
                         throw new IllegalArgumentException("非json文件");
                     }
-                    generatorParam = JSONObject.parseObject(IOUtils.toString(new FileInputStream(path), "UTF-8"), GeneratorParam.class);
-                }
-
-                try {
-                    generator(generatorParam);
-                    System.out.println("处理成功..");
-                } catch (IOException e) {
-                    System.err.println("处理失败: " + e.getMessage());
+                    generatorParam = JSONObject.parseObject(IOUtils.toString(configFileInputStream, "UTF-8"), GeneratorParam.class);
                 }
 
             } catch (FileNotFoundException e) {
@@ -52,6 +51,31 @@ public abstract class AbstractMain {
             } catch (Exception e) {
                 String msg = e.getMessage();
                 System.err.println(String.format("读取配置文件错误%s", msg != null ? ": " + msg : ""));
+            } finally {
+                //关闭流
+                if (configFileInputStream != null) {
+                    IOUtils.closeQuietly(configFileInputStream);
+                }
+            }
+
+            try {
+                boolean paramPrint = Boolean.parseBoolean(System.getProperty("generator.param.print", "false"));
+                if (paramPrint) {
+                    System.out.println(
+                            "\n--------- generator param -------------\n"
+                                    + JSONObject.toJSONString(
+                                    generatorParam,
+                                    SerializerFeature.PrettyFormat,
+                                    SerializerFeature.WriteMapNullValue,
+                                    SerializerFeature.WriteDateUseDateFormat
+                            ) +
+                                    "\n--------- generator param -------------\n"
+                    );
+                }
+                generator(generatorParam);
+                System.out.println("处理成功..");
+            } catch (Exception e) {
+                System.err.println("处理失败: " + e.getMessage());
             }
 
             System.out.println("是否退出(1: 是, 0: 否): ");

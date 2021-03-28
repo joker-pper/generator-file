@@ -35,7 +35,7 @@ public class FileZipByteTests extends BaseTests {
             generatorBefore(generatorParam);
 
             Map<String, ByteArrayOutputStream> byteArrayOutputStreamMap = generatorService.generator(generatorParam);
-            try (ByteArrayOutputStream byteArrayOutputStream = byteArrayOutputStreamMap.get(GeneratorUtils.ZIP_CONFIG)) {
+            try (ByteArrayOutputStream byteArrayOutputStream = byteArrayOutputStreamMap.get(GeneratorUtils.ZIP_CONFIG_KEY)) {
                 FileOutputStream fileOutputStream = new FileOutputStream(outZipFile);
                 try {
                     IOUtils.write(byteArrayOutputStream.toByteArray(), fileOutputStream);

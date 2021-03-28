@@ -3,6 +3,7 @@ package com.joker17.generator.common.model;
 import lombok.Data;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
@@ -22,7 +23,7 @@ public class GeneratorTemplate {
      *  /config/default.config.vm -> /config/${package}/default.config
      *  ~zip! -> byte/导出文件路径 (以zip方式导出)
      */
-    private Map<String, String> config = new HashMap<>(16);
+    private LinkedHashMap<String, String> config = new LinkedHashMap<>(16);
 
 
     /**

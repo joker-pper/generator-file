@@ -15,9 +15,7 @@ import java.util.zip.ZipOutputStream;
 
 public class GeneratorUtils {
 
-    public static final String ZIP_CONFIG = "~zip!";
-
-    public static final String BYTE_TEXT = "byte";
+    public static final String ZIP_CONFIG_KEY = "~zip!";
 
     public static final String UTF8_TEXT = "UTF-8";
 
@@ -249,20 +247,20 @@ public class GeneratorUtils {
         Map<String, ByteArrayOutputStream> byteArrayOutputStreamMap = new HashMap<>(16);
 
         //获取zip路径
-        String zipPath = templateConfigMap.get(ZIP_CONFIG);
+        String zipPath = templateConfigMap.get(ZIP_CONFIG_KEY);
 
         boolean isExportZip = zipPath != null && zipPath.length() > 0;
-        boolean isZipByte = isExportZip && zipPath.equals(BYTE_TEXT);
+        boolean isZipByte = isExportZip && GeneratorExportTypeEnum.BYTE.isMatch(zipPath);
 
         ZipOutputStream zipOutputStream = null;
         if (isExportZip) {
             //为导出zip时,移除模板中当前zip的额外配置
-            templateConfigMap.remove(ZIP_CONFIG);
+            templateConfigMap.remove(ZIP_CONFIG_KEY);
             if (isZipByte) {
                 //为字节时
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(BUFFER_SIZE);
                 zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
-                byteArrayOutputStreamMap.put(ZIP_CONFIG, byteArrayOutputStream);
+                byteArrayOutputStreamMap.put(ZIP_CONFIG_KEY, byteArrayOutputStream);
             } else {
                 //为文件时
                 zipPath = parseVarExpressValue(zipPath, dataConfig);
@@ -295,15 +293,21 @@ public class GeneratorUtils {
                 //获取模板对象
                 Template template = worker.getTemplate(templatePath, inputCharset);
 
-                if (BYTE_TEXT.equals(exportFilePath)) {
-                    //导出当前为byte时
+                //处理模板文件
+
+                if (GeneratorExportTypeEnum.BYTE.isMatch(exportFilePath) || GeneratorExportTypeEnum.NONE.isMatch(exportFilePath)) {
+
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(BUFFER_SIZE);
                     streamWriter = new OutputStreamWriter(byteArrayOutputStream, outCharset);
 
                     worker.process(template, workModel, streamWriter);
                     streamWriter.flush();
 
-                    byteArrayOutputStreamMap.put(templateKey, byteArrayOutputStream);
+                    if (GeneratorExportTypeEnum.BYTE.isMatch(exportFilePath)) {
+                        //为byte时设置
+                        byteArrayOutputStreamMap.put(templateKey, byteArrayOutputStream);
+                    }
+
                 } else {
                     //获取导出的具体路径值
                     exportFilePath = parseVarExpressValue(exportFilePath, dataConfig);
@@ -343,6 +347,7 @@ public class GeneratorUtils {
             if (isExportZip) {
                 IOUtils.closeQuietly(zipOutputStream);
                 if (!isZipByte && hasIOException) {
+                    //删除失败的zip文件
                     FileUtils.deleteQuietly(new File(zipPath));
                 }
             }
