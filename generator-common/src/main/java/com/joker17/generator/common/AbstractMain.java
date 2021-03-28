@@ -3,7 +3,7 @@ package com.joker17.generator.common;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.joker17.generator.common.model.GeneratorParam;
-import com.joker17.generator.common.utils.ScannerSupport;
+import com.joker17.generator.common.support.ScannerSupport;
 import com.joker17.generator.common.utils.YamlUtils;
 import org.apache.commons.io.IOUtils;
 import java.io.FileInputStream;

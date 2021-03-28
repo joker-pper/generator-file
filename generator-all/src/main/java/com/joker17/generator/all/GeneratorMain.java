@@ -1,6 +1,6 @@
 package com.joker17.generator.all;
 
-import com.joker17.generator.common.utils.ScannerSupport;
+import com.joker17.generator.common.support.ScannerSupport;
 
 public class GeneratorMain {
 

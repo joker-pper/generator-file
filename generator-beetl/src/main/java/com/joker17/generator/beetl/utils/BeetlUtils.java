@@ -3,7 +3,7 @@ package com.joker17.generator.beetl.utils;
 import com.joker17.generator.common.model.GeneratorParam;
 import com.joker17.generator.common.model.GeneratorResourceType;
 import com.joker17.generator.common.utils.GeneratorUtils;
-import com.joker17.generator.common.utils.GeneratorWorker;
+import com.joker17.generator.common.support.GeneratorWorker;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;

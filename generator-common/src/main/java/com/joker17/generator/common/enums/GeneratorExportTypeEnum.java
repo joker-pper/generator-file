@@ -1,4 +1,4 @@
-package com.joker17.generator.common.utils;
+package com.joker17.generator.common.enums;
 
 public enum GeneratorExportTypeEnum {
 

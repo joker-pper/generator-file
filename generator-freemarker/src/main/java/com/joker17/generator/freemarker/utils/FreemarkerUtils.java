@@ -3,7 +3,7 @@ package com.joker17.generator.freemarker.utils;
 import com.joker17.generator.common.model.GeneratorParam;
 import com.joker17.generator.common.model.GeneratorResourceType;
 import com.joker17.generator.common.utils.GeneratorUtils;
-import com.joker17.generator.common.utils.GeneratorWorker;
+import com.joker17.generator.common.support.GeneratorWorker;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

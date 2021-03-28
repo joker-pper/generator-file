@@ -1,4 +1,4 @@
-package com.joker17.generator.common.utils;
+package com.joker17.generator.common.support;
 
 import com.joker17.generator.common.model.GeneratorResourceType;
 
